@@ -1,27 +1,27 @@
 import { getRepository } from "typeorm";
-import { Category } from "../database/migrations/entities/Category";
+import {Category} from "./../entities/Category";
 
 type CategoryRequest = {
     name: string;
     description: string;
 }
 
-export class CreateCategoryService{
-    async execute({name,description}: CategoryRequest): Promise<Category | Error> {
-            const repo = getRepository(Category);
+export class CreateCategoryService {
 
-            if(await repo.findOne({ name })){
-                return new Error("Category already exists");
-    
-            }
+    async execute({name, description}: CategoryRequest): Promise<Category | Error> {
+        const repo = getRepository(Category)
 
-            const category = repo.create({
-                name,
-                description,
-            });
-
-            await repo.save(category);
-
-            return category;
+        if(await repo.findOne({name})) {
+            return new Error("category no exist")
         }
+
+        const category = repo.create({
+            name,
+            description
+        })
+
+        await repo.save(category)
+
+        return category;
+    }
 }
